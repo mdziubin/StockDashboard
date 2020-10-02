@@ -9,9 +9,11 @@ import {
   Link,
   TextField,
   Typography,
+  FormHelperText,
   makeStyles
 } from '@material-ui/core';
 import Page from 'src/components/Page';
+import Authservice from '../../services/auth-service';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -37,8 +39,8 @@ const LoginView = () => {
         <Container maxWidth="sm">
           <Formik
             initialValues={{
-              email: 'demo@devias.io',
-              password: 'Password123'
+              email: 'test@test.com',
+              password: 'password'
             }}
             validationSchema={Yup.object().shape({
               email: Yup.string()
@@ -49,8 +51,13 @@ const LoginView = () => {
                 .max(255)
                 .required('Password is required')
             })}
-            onSubmit={() => {
-              navigate('/app/dashboard', { replace: true });
+            onSubmit={async (values, { setFieldError }) => {
+              try {
+                await Authservice.login(values.email, values.password);
+                navigate('/app/dashboard', { replace: true });
+              } catch (error) {
+                setFieldError('authentication', error.response.data.message);
+              }
             }}
           >
             {({
@@ -95,6 +102,11 @@ const LoginView = () => {
                   variant="outlined"
                 />
                 <Box my={2}>
+                  {errors.authentication && (
+                    <FormHelperText error>
+                      {errors.authentication}
+                    </FormHelperText>
+                  )}
                   <Button
                     color="primary"
                     disabled={isSubmitting}
