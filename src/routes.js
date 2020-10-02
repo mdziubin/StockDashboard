@@ -15,7 +15,7 @@ const routes = [
     children: [
       { path: 'dashboard', element: <DashboardView /> },
       { path: 'stocks', element: <StockListView /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '*', element: <Navigate to="/404" replace={true} /> }
     ]
   },
   {
@@ -25,8 +25,8 @@ const routes = [
       { path: 'login', element: <LoginView /> },
       { path: 'register', element: <RegisterView /> },
       { path: '404', element: <NotFoundView /> },
-      { path: '/', element: <Navigate to="/app/dashboard" /> },
-      { path: '*', element: <Navigate to="/404" /> }
+      { path: '/', element: <Navigate to="/app/dashboard" replace={true} /> },
+      { path: '*', element: <Navigate to="/404" replace={true} /> }
     ]
   }
 ];
