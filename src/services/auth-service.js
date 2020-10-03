@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from '../axios-backend';
 
-const API_URL = 'http://localhost:8080/auth/';
+// const API_URL = 'http://localhost:8080/auth/';
 
 class AuthService {
   login(email, password) {
     return axios
-      .post(API_URL + 'signin', {
+      .post('auth/signin', {
         email: email,
         password: password
       })
@@ -13,7 +13,6 @@ class AuthService {
         if (response.data.token) {
           localStorage.setItem('token', JSON.stringify(response.data.token));
         }
-
         return response.data;
       });
   }
@@ -23,7 +22,7 @@ class AuthService {
   }
 
   register(username, email, password) {
-    return axios.post(API_URL + 'signup', {
+    return axios.post('auth/signup', {
       username,
       email,
       password
