@@ -15,14 +15,16 @@ const withErrorHandler = (WrappedComponent, axios) => {
       this.resInterceptor = axios.interceptors.response.use(
         res => res,
         err => {
-          this.setState({ error: true });
+          const status = err.response.status;
+          if (status !== 401 && status !== 422) {
+            this.setState({ error: true });
+          }
           throw err;
         }
       );
     }
 
     componentWillUnmount() {
-      console.log('Component will unmount');
       axios.interceptors.request.eject(this.reqInterceptor);
       axios.interceptors.response.eject(this.resInterceptor);
     }

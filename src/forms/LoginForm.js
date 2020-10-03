@@ -10,9 +10,9 @@ import {
   Typography,
   FormHelperText
 } from '@material-ui/core';
-import Authservice from '../../services/auth-service';
+import Authservice from '../services/auth-service';
 import withErrorHandler from 'src/components/withErrorHandler';
-import axios from '../../axios-backend';
+import axios from '../axios-backend';
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -35,14 +35,12 @@ const LoginForm = () => {
       onSubmit={async (values, { setFieldError }) => {
         try {
           await Authservice.login(values.email, values.password);
-          console.log('Navigating');
           navigate('/app/dashboard', { replace: true });
         } catch (error) {
           if (error.response) {
             setFieldError('authentication', error.response.data.message);
           }
         }
-        return;
       }}
     >
       {({

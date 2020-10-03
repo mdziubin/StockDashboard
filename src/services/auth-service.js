@@ -6,8 +6,8 @@ class AuthService {
   login(email, password) {
     return axios
       .post('auth/signin', {
-        email: email,
-        password: password
+        email,
+        password
       })
       .then(response => {
         if (response.data.token) {
@@ -21,12 +21,14 @@ class AuthService {
     localStorage.removeItem('token');
   }
 
-  register(username, email, password) {
-    return axios.post('auth/signup', {
-      username,
-      email,
-      password
-    });
+  register(name, email, password) {
+    return axios
+      .put('auth/signup', {
+        email,
+        name,
+        password
+      })
+      .then(response => response.data);
   }
 
   getCurrentUser() {
