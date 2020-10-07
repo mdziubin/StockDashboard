@@ -34,7 +34,7 @@ const FavTable = () => {
   const loadData = async () => {
     const stockArray = await getFavs();
     if (stockArray.length === 0) return;
-    const info = await getPrices([]);
+    const info = await getPrices(stockArray);
     setStocks(info);
   };
 
