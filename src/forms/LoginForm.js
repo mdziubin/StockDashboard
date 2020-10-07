@@ -11,7 +11,7 @@ import {
   FormHelperText
 } from '@material-ui/core';
 import Authservice from '../services/auth-service';
-import withErrorHandler from 'src/components/withErrorHandler';
+import withErrorHandlerModal from 'src/components/withErrorHandlerModal';
 import axios from '../axios-backend';
 
 const LoginForm = () => {
@@ -111,4 +111,4 @@ const LoginForm = () => {
   );
 };
 
-export default withErrorHandler(LoginForm, axios);
+export default withErrorHandlerModal(LoginForm, axios);

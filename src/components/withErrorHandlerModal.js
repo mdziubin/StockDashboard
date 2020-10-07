@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SimpleModal from './SimpleModal';
 
-const withErrorHandler = (WrappedComponent, axios) => {
+const withErrorHandlerModal = (WrappedComponent, axios) => {
   return class extends Component {
     state = {
       error: false
@@ -47,4 +47,4 @@ const withErrorHandler = (WrappedComponent, axios) => {
   };
 };
 
-export default withErrorHandler;
+export default withErrorHandlerModal;

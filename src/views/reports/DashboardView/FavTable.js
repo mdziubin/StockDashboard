@@ -5,50 +5,81 @@ import {
   Box,
   Button,
   Card,
-  CardContent,
   CardHeader,
   Divider,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow,
-  CircularProgress
+  TableRow
 } from '@material-ui/core';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import StyledTC from './StyledTC';
 import { getFavs, getPrices } from '../../../services/stock-service';
+import CContentLoading from '../../../components/CContentLoading';
 
 // Data incoming in form ["symbol":{"quote": {"symbol":"AAPL", "change":40, "changePercent":0.01, "lastestPrice":111, "companyName":"a"}}]
 
 const FavTable = () => {
   const [stocks, setStocks] = useState([]);
   const [isLoading, setLoading] = useState(true);
+  const [err, setError] = useState(false);
 
   useEffect(() => {
-    loadData();
+    loadData()
+      .then(() => setLoading(false))
+      .catch(() => setError(true));
   }, []);
 
   const loadData = async () => {
-    try {
-      const stockArray = await getFavs();
-      if (stockArray.length === 0) return setLoading(false);
-
-      const info = await getPrices(stockArray);
-      setStocks(info);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
+    const stockArray = await getFavs();
+    if (stockArray.length === 0) return;
+    const info = await getPrices([]);
+    setStocks(info);
   };
 
-  if (isLoading) {
-    return (
-      <Card>
-        <CardContent style={{ display: 'flex', justifyContent: 'center' }}>
-          <CircularProgress />
-        </CardContent>
-      </Card>
+  let body = <CContentLoading err={err} />;
+
+  if (!isLoading && !err) {
+    body = (
+      <>
+        <PerfectScrollbar>
+          <Box minWidth={800}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Symbol</TableCell>
+                  <TableCell>Company</TableCell>
+                  <TableCell>Last Price</TableCell>
+                  <TableCell>Change</TableCell>
+                  <TableCell>% Change</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {stocks.map(({ quote }) => (
+                  <TableRow hover key={quote.symbol}>
+                    <TableCell>{quote.symbol}</TableCell>
+                    <TableCell>{quote.companyName}</TableCell>
+                    <TableCell>{quote.latestPrice}</TableCell>
+                    <StyledTC val={quote.change} icon />
+                    <StyledTC val={quote.changePercent} percent />
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        </PerfectScrollbar>
+        <Box display="flex" justifyContent="flex-end" p={2}>
+          <Button
+            color="primary"
+            endIcon={<ArrowRightIcon />}
+            size="small"
+            variant="text"
+          >
+            View all
+          </Button>
+        </Box>
+      </>
     );
   }
 
@@ -56,42 +87,7 @@ const FavTable = () => {
     <Card>
       <CardHeader title="Watchlist" />
       <Divider />
-      <PerfectScrollbar>
-        <Box minWidth={800}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Symbol</TableCell>
-                <TableCell>Company</TableCell>
-                <TableCell>Last Price</TableCell>
-                <TableCell>Change</TableCell>
-                <TableCell>% Change</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {stocks.map(({ quote }) => (
-                <TableRow hover key={quote.symbol}>
-                  <TableCell>{quote.symbol}</TableCell>
-                  <TableCell>{quote.companyName}</TableCell>
-                  <TableCell>{quote.latestPrice}</TableCell>
-                  <StyledTC val={quote.change} icon />
-                  <StyledTC val={quote.changePercent} percent />
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-      </PerfectScrollbar>
-      <Box display="flex" justifyContent="flex-end" p={2}>
-        <Button
-          color="primary"
-          endIcon={<ArrowRightIcon />}
-          size="small"
-          variant="text"
-        >
-          View all
-        </Button>
-      </Box>
+      {body}
     </Card>
   );
 };

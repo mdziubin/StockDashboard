@@ -11,7 +11,7 @@ import {
   Typography
 } from '@material-ui/core';
 import Authservice from '../services/auth-service';
-import withErrorHandler from 'src/components/withErrorHandler';
+import withErrorHandlerModal from 'src/components/withErrorHandlerModal';
 import axios from '../axios-backend';
 
 const RegisterForm = () => {
@@ -138,4 +138,4 @@ const RegisterForm = () => {
   );
 };
 
-export default withErrorHandler(RegisterForm, axios);
+export default withErrorHandlerModal(RegisterForm, axios);
