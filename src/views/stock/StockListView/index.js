@@ -3,7 +3,7 @@ import { Box, Container, Grid, makeStyles } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import Page from 'src/components/Page';
 import Toolbar from './Toolbar';
-import ProductCard from './ProductCard';
+import ProductCard from './StockCard';
 import data from './data';
 
 const useStyles = makeStyles(theme => ({
@@ -13,27 +13,24 @@ const useStyles = makeStyles(theme => ({
     paddingBottom: theme.spacing(3),
     paddingTop: theme.spacing(3)
   },
-  productCard: {
+  stockCard: {
     height: '100%'
   }
 }));
 
 const ProductList = () => {
   const classes = useStyles();
-  const [products] = useState(data);
+  const [stocks] = useState(data);
 
   return (
-    <Page className={classes.root} title="Products">
+    <Page className={classes.root} title="Stocks">
       <Container maxWidth={false}>
         <Toolbar />
         <Box mt={3}>
           <Grid container spacing={3}>
-            {products.map(product => (
-              <Grid item key={product.id} lg={4} md={6} xs={12}>
-                <ProductCard
-                  className={classes.productCard}
-                  product={product}
-                />
+            {stocks.map(stock => (
+              <Grid item key={stock.id} xs={12} sm={6} lg={4}>
+                <ProductCard className={classes.stockCard} stock={stock} />
               </Grid>
             ))}
           </Grid>

@@ -18,7 +18,7 @@ import StyledTC from './StyledTC';
 import { getFavs, getPrices } from '../../../services/stock-service';
 import CContentLoading from '../../../components/CContentLoading';
 
-// Data incoming in form ["symbol":{"quote": {"symbol":"AAPL", "change":40, "changePercent":0.01, "lastestPrice":111, "companyName":"a"}}]
+// Data incoming in form ["symbol":{"quote": {"symbol":"AAPL", "change":40, "changePercent":0.01, "latestPrice":111, "companyName":"a"}}]
 
 const FavTable = () => {
   const [stocks, setStocks] = useState([]);
