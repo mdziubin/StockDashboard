@@ -20,12 +20,21 @@ const useStyles = makeStyles(theme => ({
 
 const ProductList = () => {
   const classes = useStyles();
-  const [stocks] = useState(data);
+  const [stocks, setStocks] = useState(data);
+
+  const searchHandler = event => {
+    const regex = new RegExp(event.target.value, 'i');
+    const filteredStocks = data.filter(
+      stock => regex.test(stock.symbol) || regex.test(stock.companyName)
+    );
+
+    setStocks(filteredStocks);
+  };
 
   return (
     <Page className={classes.root} title="Stocks">
       <Container maxWidth={false}>
-        <Toolbar />
+        <Toolbar onType={searchHandler} />
         <Box mt={3}>
           <Grid container spacing={3}>
             {stocks.map(stock => (

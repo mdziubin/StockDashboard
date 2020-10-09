@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import {
   Box,
   Button,
@@ -23,11 +22,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Toolbar = ({ className, ...rest }) => {
+const Toolbar = props => {
   const classes = useStyles();
 
   return (
-    <div className={clsx(classes.root, className)} {...rest}>
+    <div className={classes.root}>
       <Box display="flex" justifyContent="flex-end">
         <Button className={classes.importButton}>Import</Button>
         <Button className={classes.exportButton}>Export</Button>
@@ -52,6 +51,7 @@ const Toolbar = ({ className, ...rest }) => {
                 }}
                 placeholder="Search stocks"
                 variant="outlined"
+                onChange={props.onType}
               />
             </Box>
           </CardContent>
