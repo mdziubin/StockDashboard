@@ -8,7 +8,6 @@ const withErrorHandlerModal = (WrappedComponent, axios) => {
     };
 
     componentDidMount() {
-      console.log('Modal mounted');
       this.reqInterceptor = axios.interceptors.request.use(req => {
         this.setState({ error: false });
         return req;
@@ -16,7 +15,6 @@ const withErrorHandlerModal = (WrappedComponent, axios) => {
       this.resInterceptor = axios.interceptors.response.use(
         res => res,
         err => {
-          console.log(err.response);
           if (!err.response) {
             this.setState({ error: true });
           }
@@ -26,7 +24,6 @@ const withErrorHandlerModal = (WrappedComponent, axios) => {
     }
 
     componentWillUnmount() {
-      console.log('Modal unmounted');
       axios.interceptors.request.eject(this.reqInterceptor);
       axios.interceptors.response.eject(this.resInterceptor);
     }
@@ -37,13 +34,13 @@ const withErrorHandlerModal = (WrappedComponent, axios) => {
 
     render() {
       return (
-        <React.Fragment>
+        <>
           <SimpleModal
             modalClosed={this.errorConfirmedHandler}
             open={this.state.error}
           />
           <WrappedComponent {...this.props} />
-        </React.Fragment>
+        </>
       );
     }
   };
