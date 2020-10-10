@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Container, Grid, makeStyles } from '@material-ui/core';
 import { Pagination } from '@material-ui/lab';
 import Page from 'src/components/Page';
 import Toolbar from './Toolbar';
 import ProductCard from './StockCard';
-import data from './data';
+
+import { getList, getPrices } from '../../../services/stock-service';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -20,26 +21,34 @@ const useStyles = makeStyles(theme => ({
 
 const ProductList = () => {
   const classes = useStyles();
-  const [stocks, setStocks] = useState(data);
+  const [stocks, setStocks] = useState([]);
+  const [filter, setFilter] = useState('');
 
-  const searchHandler = event => {
-    const regex = new RegExp(event.target.value, 'i');
-    const filteredStocks = data.filter(
-      stock => regex.test(stock.symbol) || regex.test(stock.companyName)
-    );
+  const loadData = async filter => {
+    const stockArray = await getList(1, filter);
+    if (stockArray.length === 0) return;
+    const info = await getPrices(stockArray);
+    console.log(info);
+    setStocks(info);
+  };
 
-    setStocks(filteredStocks);
+  useEffect(() => {
+    loadData(filter);
+  }, [filter]);
+
+  const searchHandler = value => {
+    setFilter(value);
   };
 
   return (
     <Page className={classes.root} title="Stocks">
       <Container maxWidth={false}>
-        <Toolbar onType={searchHandler} />
+        <Toolbar search={searchHandler} />
         <Box mt={3}>
           <Grid container spacing={3}>
-            {stocks.map(stock => (
-              <Grid item key={stock.id} xs={12} sm={6} lg={4}>
-                <ProductCard className={classes.stockCard} stock={stock} />
+            {stocks.map(({ quote }) => (
+              <Grid item key={quote.symbol} xs={12} sm={6} lg={4}>
+                <ProductCard className={classes.stockCard} stock={quote} />
               </Grid>
             ))}
           </Grid>

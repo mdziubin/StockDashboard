@@ -22,8 +22,12 @@ const StyledT = props => {
   }
 
   const change = props.change;
-  const pChange = ' (' + (props.percent * 100).toFixed(2) + '%)';
-  const txt = (change <= 0 ? '' : '+') + change.toFixed(2) + pChange;
+  let txt = '-';
+
+  if (change) {
+    const pChange = ' (' + (props.percent * 100).toFixed(2) + '%)';
+    txt = (change <= 0 ? '' : '+') + change.toFixed(2) + pChange;
+  }
 
   return <Typography className={classes[tType]}>{txt}</Typography>;
 };

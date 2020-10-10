@@ -14,6 +14,7 @@ const getFavs = (page = 1) => {
 };
 
 const getPrices = symbolArray => {
+  console.log(symbolArray);
   return axiosIEX
     .get('/stock/market/batch', {
       params: {
@@ -23,7 +24,25 @@ const getPrices = symbolArray => {
       }
     })
     .then(response => {
+      console.log(response.data);
       return Object.values(response.data);
+    });
+};
+
+const getList = (page = 1, filter = '') => {
+  console.log('getting list');
+  return axiosBackEnd
+    .get('/market/stocks', {
+      headers: {
+        Authorization: `Bearer ${getToken()}`
+      },
+      params: {
+        filter: filter,
+        page: page
+      }
+    })
+    .then(response => {
+      return response.data.stocks.map(stock => stock.symbol);
     });
 };
 
@@ -31,4 +50,4 @@ const getToken = () => {
   return JSON.parse(localStorage.getItem('token'));
 };
 
-export { getFavs, getPrices };
+export { getFavs, getPrices, getList };

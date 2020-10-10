@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Box,
@@ -25,34 +25,46 @@ const useStyles = makeStyles(theme => ({
 const Toolbar = props => {
   const classes = useStyles();
 
+  const [filter, setFilter] = useState('');
+
+  const filterChangedHandler = event => {
+    setFilter(event.target.value);
+  };
+
+  const searchClickedHandler = () => {
+    props.search(filter);
+  };
+
   return (
     <div className={classes.root}>
-      <Box display="flex" justifyContent="flex-end">
-        <Button className={classes.importButton}>Import</Button>
-        <Button className={classes.exportButton}>Export</Button>
-        <Button color="primary" variant="contained">
-          Add product
-        </Button>
-      </Box>
       <Box mt={3}>
         <Card>
           <CardContent>
-            <Box maxWidth={500}>
-              <TextField
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SvgIcon fontSize="small" color="action">
-                        <SearchIcon />
-                      </SvgIcon>
-                    </InputAdornment>
-                  )
-                }}
-                placeholder="Search stocks"
-                variant="outlined"
-                onChange={props.onType}
-              />
+            <Box display="flex">
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={searchClickedHandler}
+              >
+                Search
+              </Button>
+              <Box maxWidth={500} ml={1} flexGrow={1}>
+                <TextField
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SvgIcon fontSize="small" color="action">
+                          <SearchIcon />
+                        </SvgIcon>
+                      </InputAdornment>
+                    )
+                  }}
+                  placeholder="Search stocks"
+                  variant="outlined"
+                  onChange={filterChangedHandler}
+                />
+              </Box>
             </Box>
           </CardContent>
         </Card>
