@@ -1,6 +1,19 @@
 import axiosBackEnd from '../axios-backend';
 import axiosIEX from '../axios-iex';
 
+const delFav = id => {
+  return axiosBackEnd
+    .delete('dash/stock/' + id, {
+      headers: {
+        Authorization: `Bearer ${getToken()}`
+      }
+    })
+    .then(response => {
+      console.log(response.data);
+      return response.data.message;
+    });
+};
+
 const addFav = symbol => {
   return axiosBackEnd
     .post(
@@ -26,24 +39,25 @@ const getFavs = (page = 1) => {
       }
     })
     .then(response => {
-      return response.data.stocks.map(stock => stock.symbol);
+      return response.data.stocks;
     });
 };
 
-const getPrices = symbolArray => {
-  console.log(symbolArray);
+const getPrices = stocks => {
+  console.log(stocks);
+  const symbols = stocks.map(stock => stock.symbol).join(',');
   return axiosIEX
     .get('/stock/market/batch', {
       params: {
-        symbols: symbolArray.join(','),
+        symbols: symbols,
         types: 'quote',
         filter: 'symbol,change,changePercent,latestPrice,companyName'
       }
     })
     .then(response => {
       console.log(response.data);
-      // Return an array of quote objects with null quotes filtered out
-      return Object.values(response.data).filter(({ quote }) => quote);
+      // Return an array of quote objects
+      return Object.values(response.data);
     });
 };
 
@@ -60,7 +74,7 @@ const getList = (page = 1, filter = '') => {
       }
     })
     .then(response => {
-      return response.data.stocks.map(stock => stock.symbol);
+      return response.data.stocks;
     });
 };
 
@@ -68,4 +82,4 @@ const getToken = () => {
   return JSON.parse(localStorage.getItem('token'));
 };
 
-export { getFavs, getPrices, getList, addFav };
+export { getFavs, getPrices, getList, addFav, delFav };

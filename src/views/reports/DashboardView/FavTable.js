@@ -19,7 +19,7 @@ import {
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import DeleteIcon from '@material-ui/icons/Delete';
 import StyledTC from './StyledTC';
-import { getFavs, getPrices } from '../../../services/stock-service';
+import { getFavs, getPrices, delFav } from '../../../services/stock-service';
 import CContentLoading from '../../../components/CContentLoading';
 
 // Data incoming in form ["symbol":{"quote": {"symbol":"AAPL", "change":40, "changePercent":0.01, "latestPrice":111, "companyName":"a"}}]
@@ -41,17 +41,31 @@ const FavTable = () => {
     const stockArray = await getFavs();
     if (stockArray.length === 0) return;
     const info = await getPrices(stockArray);
-    setStocks(info);
+
+    // Attach MongoId to each quote
+    const loadedData = info.map((el, i) => {
+      return {
+        ...el.quote,
+        id: stockArray[i]._id
+      };
+    });
+    setStocks(loadedData);
   };
 
   const editSwitchHandler = event => {
     setEdit(event.target.checked);
   };
 
-  const deleteStockHandler = (symbol, i) => {
-    let newArr = [...stocks];
-    newArr.splice(i, 1);
-    setStocks(newArr);
+  const deleteStockHandler = async (id, i) => {
+    try {
+      await delFav(id);
+      let newArr = [...stocks];
+      newArr.splice(i, 1);
+      setStocks(newArr);
+    } catch (error) {
+      console.log(error);
+      setError(true);
+    }
   };
 
   let body = <CContentLoading err={err} />;
@@ -73,17 +87,17 @@ const FavTable = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {stocks.map(({ quote }, i) => (
-                  <TableRow hover key={quote.symbol}>
-                    <TableCell>{quote.symbol}</TableCell>
-                    <TableCell>{quote.companyName}</TableCell>
-                    <TableCell>{quote.latestPrice}</TableCell>
-                    <StyledTC val={quote.change} icon />
-                    <StyledTC val={quote.changePercent} percent />
+                {stocks.map((stock, i) => (
+                  <TableRow hover key={stock.symbol}>
+                    <TableCell>{stock.symbol}</TableCell>
+                    <TableCell>{stock.companyName}</TableCell>
+                    <TableCell>{stock.latestPrice}</TableCell>
+                    <StyledTC val={stock.change} icon />
+                    <StyledTC val={stock.changePercent} percent />
                     {edit && (
                       <TableCell>
                         <IconButton
-                          onClick={() => deleteStockHandler(quote.symbol, i)}
+                          onClick={() => deleteStockHandler(stock.id, i)}
                         >
                           <DeleteIcon fontSize="small" color="action" />
                         </IconButton>
