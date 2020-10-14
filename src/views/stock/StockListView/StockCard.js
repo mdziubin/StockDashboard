@@ -10,8 +10,8 @@ import {
   Typography,
   makeStyles
 } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import StyledT from './StyledT';
+import AsyncAddButton from '../../../components/UI/AsyncAddButton';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const ProductCard = ({ className, stock }) => {
+const ProductCard = ({ className, stock, addFav }) => {
   const classes = useStyles();
 
   return (
@@ -53,13 +53,7 @@ const ProductCard = ({ className, stock }) => {
       </CardContent>
       <Box flexGrow={1} />
       <Divider />
-      <Box p={1}>
-        <Grid container justify="space-between" spacing={2}>
-          <Grid className={classes.statsItem} item>
-            <AddCircleIcon className={classes.statsIcon} color="action" />
-          </Grid>
-        </Grid>
-      </Box>
+      <AsyncAddButton addClick={addFav} />
     </Card>
   );
 };

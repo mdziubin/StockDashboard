@@ -1,6 +1,23 @@
 import axiosBackEnd from '../axios-backend';
 import axiosIEX from '../axios-iex';
 
+const addFav = symbol => {
+  return axiosBackEnd
+    .post(
+      'dash/stock',
+      { symbol },
+      {
+        headers: {
+          Authorization: `Bearer ${getToken()}`
+        }
+      }
+    )
+    .then(response => {
+      console.log(response.data);
+      return response.data.message;
+    });
+};
+
 const getFavs = (page = 1) => {
   return axiosBackEnd
     .get('dash/stocks?page=' + page, {
@@ -25,7 +42,8 @@ const getPrices = symbolArray => {
     })
     .then(response => {
       console.log(response.data);
-      return Object.values(response.data);
+      // Return an array of quote objects with null quotes filtered out
+      return Object.values(response.data).filter(({ quote }) => quote);
     });
 };
 
@@ -50,4 +68,4 @@ const getToken = () => {
   return JSON.parse(localStorage.getItem('token'));
 };
 
-export { getFavs, getPrices, getList };
+export { getFavs, getPrices, getList, addFav };

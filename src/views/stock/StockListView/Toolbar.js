@@ -6,11 +6,8 @@ import {
   Card,
   CardContent,
   TextField,
-  InputAdornment,
-  SvgIcon,
   makeStyles
 } from '@material-ui/core';
-import { Search as SearchIcon } from 'react-feather';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -51,15 +48,6 @@ const Toolbar = props => {
               <Box maxWidth={500} ml={1} flexGrow={1}>
                 <TextField
                   fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SvgIcon fontSize="small" color="action">
-                          <SearchIcon />
-                        </SvgIcon>
-                      </InputAdornment>
-                    )
-                  }}
                   placeholder="Search stocks"
                   variant="outlined"
                   onChange={filterChangedHandler}

@@ -5,7 +5,7 @@ import Page from 'src/components/Page';
 import Toolbar from './Toolbar';
 import ProductCard from './StockCard';
 
-import { getList, getPrices } from '../../../services/stock-service';
+import { getList, getPrices, addFav } from '../../../services/stock-service';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -48,7 +48,11 @@ const ProductList = () => {
           <Grid container spacing={3}>
             {stocks.map(({ quote }) => (
               <Grid item key={quote.symbol} xs={12} sm={6} lg={4}>
-                <ProductCard className={classes.stockCard} stock={quote} />
+                <ProductCard
+                  className={classes.stockCard}
+                  stock={quote}
+                  addFav={() => addFav(quote.symbol)}
+                />
               </Grid>
             ))}
           </Grid>
