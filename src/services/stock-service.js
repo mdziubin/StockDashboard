@@ -31,15 +31,15 @@ const addFav = symbol => {
     });
 };
 
-const getFavs = (page = 1) => {
+const getFavs = (page, rowsPerPage) => {
   return axiosBackEnd
-    .get('dash/stocks?page=' + page, {
+    .get('dash/stocks?page=' + page + '&per=' + rowsPerPage, {
       headers: {
         Authorization: `Bearer ${getToken()}`
       }
     })
     .then(response => {
-      return response.data.stocks;
+      return response.data;
     });
 };
 

@@ -3,7 +3,6 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import {
   Box,
-  Button,
   Card,
   CardHeader,
   Divider,
@@ -14,9 +13,9 @@ import {
   TableHead,
   TableRow,
   FormControlLabel,
-  Switch
+  Switch,
+  TablePagination
 } from '@material-ui/core';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import DeleteIcon from '@material-ui/icons/Delete';
 import StyledTC from './StyledTC';
 import { getFavs, getPrices, delFav } from '../../../services/stock-service';
@@ -31,22 +30,28 @@ const FavTable = () => {
 
   const [edit, setEdit] = useState(false);
 
+  const [page, setPage] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   useEffect(() => {
-    loadData()
+    loadData(page, rowsPerPage)
       .then(() => setLoading(false))
       .catch(() => setError(true));
-  }, []);
+  }, [page, rowsPerPage]);
 
-  const loadData = async () => {
-    const stockArray = await getFavs();
-    if (stockArray.length === 0) return;
-    const info = await getPrices(stockArray);
+  const loadData = async (page, rowsPerPage) => {
+    const { stocks, count } = await getFavs(page + 1, rowsPerPage);
+    setTotal(count);
+
+    if (stocks.length === 0) return;
+    const info = await getPrices(stocks);
 
     // Attach MongoId to each quote
     const loadedData = info.map((el, i) => {
       return {
         ...el.quote,
-        id: stockArray[i]._id
+        id: stocks[i]._id
       };
     });
     setStocks(loadedData);
@@ -68,6 +73,15 @@ const FavTable = () => {
     }
   };
 
+  const changePageHandler = (_event, newPage) => {
+    setPage(newPage);
+  };
+
+  const changePerHandler = event => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   let body = <CContentLoading err={err} />;
 
   if (!isLoading && !err) {
@@ -78,11 +92,11 @@ const FavTable = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>Symbol</TableCell>
-                  <TableCell>Company</TableCell>
-                  <TableCell>Last Price</TableCell>
-                  <TableCell>Change</TableCell>
-                  <TableCell>% Change</TableCell>
+                  <TableCell width="15%">Symbol</TableCell>
+                  <TableCell width="30%">Company</TableCell>
+                  <TableCell width="15%">Last Price</TableCell>
+                  <TableCell width="15%">Change</TableCell>
+                  <TableCell width="15%">% Change</TableCell>
                   {edit && <TableCell></TableCell>}
                 </TableRow>
               </TableHead>
@@ -91,7 +105,7 @@ const FavTable = () => {
                   <TableRow hover key={stock.symbol}>
                     <TableCell>{stock.symbol}</TableCell>
                     <TableCell>{stock.companyName}</TableCell>
-                    <TableCell>{stock.latestPrice}</TableCell>
+                    <TableCell>{'$' + stock.latestPrice}</TableCell>
                     <StyledTC val={stock.change} icon />
                     <StyledTC val={stock.changePercent} percent />
                     {edit && (
@@ -114,14 +128,15 @@ const FavTable = () => {
             control={<Switch checked={edit} onChange={editSwitchHandler} />}
             label="Edit"
           />
-          <Button
-            color="primary"
-            endIcon={<ArrowRightIcon />}
-            size="small"
-            variant="text"
-          >
-            View all
-          </Button>
+          <TablePagination
+            component="div"
+            count={total}
+            page={page}
+            onChangePage={changePageHandler}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 15]}
+            onChangeRowsPerPage={changePerHandler}
+          />
         </Box>
       </>
     );

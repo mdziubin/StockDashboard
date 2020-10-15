@@ -1,11 +1,7 @@
 import React from 'react';
 import { Container, Grid, makeStyles } from '@material-ui/core';
 import Page from 'src/components/Page';
-import Budget from './Budget';
 import FavTable from './FavTable';
-import TasksProgress from './TasksProgress';
-import TotalCustomers from './TotalCustomers';
-import TotalProfit from './TotalProfit';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,18 +19,6 @@ const Dashboard = () => {
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>
         <Grid container spacing={3} justify="center">
-          {/* <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <Budget />
-          </Grid>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TotalCustomers />
-          </Grid>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TasksProgress />
-          </Grid>
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
-            <TotalProfit />
-          </Grid> */}
           <Grid item lg={10} xs={12}>
             <FavTable />
           </Grid>
