@@ -74,7 +74,7 @@ const getList = (page = 1, filter = '') => {
       }
     })
     .then(response => {
-      return response.data.stocks;
+      return response.data;
     });
 };
 

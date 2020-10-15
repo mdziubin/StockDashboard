@@ -23,7 +23,7 @@ const Dashboard = () => {
     <Page className={classes.root} title="Dashboard">
       <Container maxWidth={false}>
         <Grid container spacing={3} justify="center">
-          <Grid item lg={3} sm={6} xl={3} xs={12}>
+          {/* <Grid item lg={3} sm={6} xl={3} xs={12}>
             <Budget />
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
@@ -34,7 +34,7 @@ const Dashboard = () => {
           </Grid>
           <Grid item lg={3} sm={6} xl={3} xs={12}>
             <TotalProfit />
-          </Grid>
+          </Grid> */}
           <Grid item lg={10} xs={12}>
             <FavTable />
           </Grid>

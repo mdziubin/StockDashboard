@@ -23,21 +23,30 @@ const ProductList = () => {
   const classes = useStyles();
   const [stocks, setStocks] = useState([]);
   const [filter, setFilter] = useState('');
+  const [pg, setPg] = useState(1);
+  const [pgLength, setPgLength] = useState(1);
 
-  const loadData = async filter => {
-    const stockArray = await getList(1, filter);
-    if (stockArray.length === 0) return;
-    const info = await getPrices(stockArray);
+  const loadData = async (pg, filter) => {
+    const { stocks, pages } = await getList(pg, filter);
+    if (stocks.length === 0) return;
+    const info = await getPrices(stocks);
     console.log(info);
     setStocks(info);
+    setPgLength(pages);
   };
 
   useEffect(() => {
-    loadData(filter);
-  }, [filter]);
+    loadData(pg, filter);
+  }, [pg, filter]);
 
   const searchHandler = value => {
+    // Note: useEffect only called once because React batch updates state in handlers
+    setPg(1);
     setFilter(value);
+  };
+
+  const pageChangedHandler = (event, value) => {
+    setPg(value);
   };
 
   return (
@@ -58,7 +67,13 @@ const ProductList = () => {
           </Grid>
         </Box>
         <Box mt={3} display="flex" justifyContent="center">
-          <Pagination color="primary" count={3} size="small" />
+          <Pagination
+            color="primary"
+            count={pgLength}
+            size="small"
+            page={pg}
+            onChange={pageChangedHandler}
+          />
         </Box>
       </Container>
     </Page>
