@@ -10,7 +10,7 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import Authservice from '../services/auth-service';
+import { register } from '../services/auth-service';
 import withErrorHandlerModal from 'src/components/withErrorHandlerModal';
 import axios from '../axios-backend';
 
@@ -39,11 +39,7 @@ const RegisterForm = () => {
       })}
       onSubmit={async (values, { setFieldError }) => {
         try {
-          await Authservice.register(
-            values.name,
-            values.email,
-            values.password
-          );
+          await register(values.name, values.email, values.password);
           navigate('/login', { replace: true });
         } catch (error) {
           if (error.response) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -10,12 +10,14 @@ import {
   Typography,
   FormHelperText
 } from '@material-ui/core';
-import Authservice from '../services/auth-service';
+import { login } from '../services/auth-service';
 import withErrorHandlerModal from 'src/components/withErrorHandlerModal';
 import axios from '../axios-backend';
+import authContext from 'src/context/authContext';
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const { setToken } = useContext(authContext);
 
   return (
     <Formik
@@ -34,7 +36,8 @@ const LoginForm = () => {
       })}
       onSubmit={async (values, { setFieldError }) => {
         try {
-          await Authservice.login(values.email, values.password);
+          const data = await login(values.email, values.password);
+          setToken(data.token);
           navigate('/app/dashboard', { replace: true });
         } catch (error) {
           if (error.response) {
