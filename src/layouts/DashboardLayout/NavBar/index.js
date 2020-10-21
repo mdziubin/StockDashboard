@@ -33,16 +33,6 @@ const items = [
     href: '/app/stocks',
     icon: ShoppingBagIcon,
     title: 'Stocks'
-  },
-  {
-    href: '/login',
-    icon: LockIcon,
-    title: 'Login'
-  },
-  {
-    href: '/register',
-    icon: UserPlusIcon,
-    title: 'Register'
   }
 ];
 
