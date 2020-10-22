@@ -11,8 +11,8 @@ import {
   makeStyles
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import InputIcon from '@material-ui/icons/Input';
 import Logo from 'src/components/Logo';
+import LogoutButton from 'src/components/UI/LogoutButton';
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -37,9 +37,7 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
             <MenuIcon />
           </IconButton>
         </Hidden>
-        <IconButton color="inherit">
-          <InputIcon />
-        </IconButton>
+        <LogoutButton />
       </Toolbar>
     </AppBar>
   );
