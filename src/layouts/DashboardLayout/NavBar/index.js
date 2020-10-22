@@ -12,9 +12,7 @@ import {
 } from '@material-ui/core';
 import {
   BarChart as BarChartIcon,
-  Lock as LockIcon,
-  ShoppingBag as ShoppingBagIcon,
-  UserPlus as UserPlusIcon
+  ShoppingBag as ShoppingBagIcon
 } from 'react-feather';
 import NavItem from './NavItem';
 
@@ -30,9 +28,9 @@ const items = [
     title: 'Dashboard'
   },
   {
-    href: '/app/stocks',
+    href: '/app/market',
     icon: ShoppingBagIcon,
-    title: 'Stocks'
+    title: 'Market'
   }
 ];
 
