@@ -10,14 +10,14 @@ const login = (email, password) => {
     })
     .then(response => {
       if (response.data.token) {
-        localStorage.setItem('token', JSON.stringify(response.data.token));
+        localStorage.setItem('authInfo', JSON.stringify(response.data));
       }
       return response.data;
     });
 };
 
 const logout = () => {
-  localStorage.removeItem('token');
+  localStorage.removeItem('authInfo');
 };
 
 const register = (name, email, password) => {
@@ -31,7 +31,7 @@ const register = (name, email, password) => {
 };
 
 const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem('token'));
+  return JSON.parse(localStorage.getItem('authInfo'));
 };
 
 export { login, logout, register, getCurrentUser };

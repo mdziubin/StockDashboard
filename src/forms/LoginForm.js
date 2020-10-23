@@ -17,7 +17,7 @@ import authContext from 'src/context/authContext';
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const { setToken } = useContext(authContext);
+  const { setAuthInfo } = useContext(authContext);
 
   return (
     <Formik
@@ -37,7 +37,7 @@ const LoginForm = () => {
       onSubmit={async (values, { setFieldError }) => {
         try {
           const data = await login(values.email, values.password);
-          setToken(data.token);
+          setAuthInfo(data);
           navigate('/app/dashboard', { replace: true });
         } catch (error) {
           if (error.response) {

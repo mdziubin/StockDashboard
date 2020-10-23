@@ -10,18 +10,20 @@ import authRoutes from 'src/authRoutes';
 import authContext from 'src/context/authContext';
 
 const App = () => {
-  const [token, setToken] = useState(JSON.parse(localStorage.getItem('token')));
+  const [authInfo, setAuthInfo] = useState(
+    JSON.parse(localStorage.getItem('authInfo'))
+  );
 
   const routing = useRoutes(routes);
   const routingAuth = useRoutes(authRoutes);
 
-  const value = { token, setToken };
+  const value = { authInfo, setAuthInfo };
 
   return (
     <authContext.Provider value={value}>
       <ThemeProvider theme={theme}>
         <GlobalStyles />
-        {token ? routing : routingAuth}
+        {authInfo ? routing : routingAuth}
       </ThemeProvider>
     </authContext.Provider>
   );

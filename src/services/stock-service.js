@@ -79,7 +79,7 @@ const getList = (page = 1, filter = '') => {
 };
 
 const getToken = () => {
-  return JSON.parse(localStorage.getItem('token'));
+  return JSON.parse(localStorage.getItem('authInfo')).token;
 };
 
 export { getFavs, getPrices, getList, addFav, delFav };
