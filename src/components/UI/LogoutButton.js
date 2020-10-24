@@ -9,7 +9,7 @@ const LogoutButton = () => {
   const { setToken } = useContext(authContext);
 
   const logoutClickedHandler = () => {
-    localStorage.clear('token');
+    localStorage.clear('authInfo');
     navigate('/login');
     setToken(null);
   };
