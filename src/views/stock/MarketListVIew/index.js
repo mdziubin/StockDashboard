@@ -28,7 +28,7 @@ const ProductList = () => {
 
   const loadData = async (pg, filter) => {
     const { stocks, pages } = await getList(pg, filter);
-    if (stocks.length === 0) return;
+    if (stocks.length === 0) return setStocks([]);
     const info = await getPrices(stocks);
     console.log(info);
     setStocks(info);
