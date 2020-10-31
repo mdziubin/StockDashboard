@@ -1,13 +1,12 @@
 import 'react-perfect-scrollbar/dist/css/styles.css';
 import React, { useState } from 'react';
 import { useRoutes } from 'react-router-dom';
-import { ThemeProvider } from '@material-ui/core';
 import GlobalStyles from 'src/components/GlobalStyles';
-import theme from 'src/theme';
 import routes from 'src/routes';
 import authRoutes from 'src/authRoutes';
 
 import authContext from 'src/context/authContext';
+import CustomThemeProvider from 'src/theme/CustomThemeProvider';
 
 const App = () => {
   const [authInfo, setAuthInfo] = useState(
@@ -21,10 +20,10 @@ const App = () => {
 
   return (
     <authContext.Provider value={value}>
-      <ThemeProvider theme={theme}>
+      <CustomThemeProvider>
         <GlobalStyles />
         {authInfo ? routing : routingAuth}
-      </ThemeProvider>
+      </CustomThemeProvider>
     </authContext.Provider>
   );
 };

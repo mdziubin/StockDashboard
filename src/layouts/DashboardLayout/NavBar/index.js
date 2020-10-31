@@ -7,6 +7,8 @@ import {
   Drawer,
   Hidden,
   List,
+  Switch,
+  FormControlLabel,
   Typography,
   makeStyles
 } from '@material-ui/core';
@@ -16,6 +18,7 @@ import {
 } from 'react-feather';
 import NavItem from './NavItem';
 import authContext from 'src/context/authContext';
+import { CustomThemeContext } from 'src/theme/CustomThemeProvider';
 
 const items = [
   {
@@ -45,6 +48,17 @@ const NavBar = ({ onMobileClose, openMobile }) => {
   const classes = useStyles();
   const location = useLocation();
   const { authInfo } = useContext(authContext);
+  const { currentTheme, setTheme } = useContext(CustomThemeContext);
+  const isDark = Boolean(currentTheme === 'dark');
+
+  const themeSwitchHandler = event => {
+    const { checked } = event.target;
+    if (checked) {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
+  };
 
   useEffect(() => {
     if (openMobile && onMobileClose) {
@@ -77,6 +91,12 @@ const NavBar = ({ onMobileClose, openMobile }) => {
         </List>
       </Box>
       <Box flexGrow={1} />
+      <Box pl={2}>
+        <FormControlLabel
+          control={<Switch checked={isDark} onClick={themeSwitchHandler} />}
+          label="Dark Mode"
+        />
+      </Box>
     </Box>
   );
 

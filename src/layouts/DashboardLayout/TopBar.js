@@ -8,10 +8,11 @@ import {
   Hidden,
   IconButton,
   Toolbar,
-  makeStyles
+  makeStyles,
+  Typography
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import Logo from 'src/components/Logo';
+import ShowChartIcon from '@material-ui/icons/ShowChart';
 import LogoutButton from 'src/components/UI/LogoutButton';
 
 const useStyles = makeStyles(() => ({
@@ -29,7 +30,12 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
     <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>
       <Toolbar>
         <RouterLink to="/">
-          <Logo />
+          <Box display="flex">
+            <Typography color="textPrimary" variant="h4">
+              StockJS
+            </Typography>
+            <ShowChartIcon style={{ color: 'darkgreen' }} />
+          </Box>
         </RouterLink>
         <Box flexGrow={1} />
         <Hidden lgUp>

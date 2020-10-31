@@ -4,10 +4,10 @@ import { TrendingDown, TrendingUp, TrendingFlat } from '@material-ui/icons';
 
 const useStyles = makeStyles(() => ({
   down: {
-    color: colors.red[900]
+    color: colors.red[700]
   },
   up: {
-    color: colors.green[900]
+    color: colors.green[700]
   }
 }));
 

@@ -6,12 +6,12 @@ import authContext from 'src/context/authContext';
 
 const LogoutButton = () => {
   const navigate = useNavigate();
-  const { setToken } = useContext(authContext);
+  const { setAuthInfo } = useContext(authContext);
 
   const logoutClickedHandler = () => {
     localStorage.clear('authInfo');
     navigate('/login');
-    setToken(null);
+    setAuthInfo(null);
   };
 
   return (

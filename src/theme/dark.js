@@ -4,20 +4,17 @@ import typography from './typography';
 
 const theme = createMuiTheme({
   palette: {
+    type: 'dark',
     background: {
-      dark: '#F4F6F8',
-      default: colors.common.white,
-      paper: colors.common.white
+      dark: '#121212',
+      default: colors.common.dark,
+      paper: '#1F1B24'
     },
     primary: {
-      main: colors.indigo[500]
+      main: '#BB86FC'
     },
     secondary: {
-      main: colors.indigo[500]
-    },
-    text: {
-      primary: colors.blueGrey[900],
-      secondary: colors.blueGrey[600]
+      main: '#BB86FC'
     }
   },
   shadows,
