@@ -35,6 +35,7 @@ const FavTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
+    setLoading(true);
     loadData(page, rowsPerPage)
       .then(() => setLoading(false))
       .catch(() => setError(true));

@@ -42,6 +42,7 @@ const Toolbar = props => {
                 color="primary"
                 variant="contained"
                 onClick={searchClickedHandler}
+                disabled={props.disable}
               >
                 Search
               </Button>

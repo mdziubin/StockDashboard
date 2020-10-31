@@ -4,6 +4,7 @@ import { Pagination } from '@material-ui/lab';
 import Page from 'src/components/Page';
 import Toolbar from './Toolbar';
 import ProductCard from './StockCard';
+import CContentLoading from '../../../components/CContentLoading';
 
 import { getList, getPrices, addFav } from '../../../services/stock-service';
 
@@ -26,7 +27,11 @@ const ProductList = () => {
   const [pg, setPg] = useState(1);
   const [pgLength, setPgLength] = useState(1);
 
+  const [isLoading, setLoading] = useState(true);
+  const [err, setError] = useState(false);
+
   const loadData = async (pg, filter) => {
+    setLoading(true);
     const { stocks, pages } = await getList(pg, filter);
     if (stocks.length === 0) return setStocks([]);
     const info = await getPrices(stocks);
@@ -36,7 +41,9 @@ const ProductList = () => {
   };
 
   useEffect(() => {
-    loadData(pg, filter);
+    loadData(pg, filter)
+      .then(() => setLoading(false))
+      .catch(() => setError(true));
   }, [pg, filter]);
 
   const searchHandler = value => {
@@ -49,10 +56,11 @@ const ProductList = () => {
     setPg(value);
   };
 
-  return (
-    <Page className={classes.root} title="Stocks">
-      <Container maxWidth={false}>
-        <Toolbar search={searchHandler} />
+  let body = <CContentLoading err={err} />;
+
+  if (!isLoading && !err) {
+    body = (
+      <>
         <Box mt={3}>
           <Grid container spacing={3}>
             {stocks.map(({ quote }) => (
@@ -75,6 +83,15 @@ const ProductList = () => {
             onChange={pageChangedHandler}
           />
         </Box>
+      </>
+    );
+  }
+
+  return (
+    <Page className={classes.root} title="Stocks">
+      <Container maxWidth={false}>
+        <Toolbar search={searchHandler} disable={err || isLoading} />
+        {body}
       </Container>
     </Page>
   );
