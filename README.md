@@ -15,6 +15,9 @@ Front-end and back-end input validation\
 ### Dashboard
 View/edit your current watchlist with a customizable table\
 ![Dashboard Demo](https://i.imgur.com/d9Iz4OV.gif)
+\
+View price histories of selected stocks
+![Graph Demo](https://i.imgur.com/hsj8lUn.gif)
 
 ### Market
 Browse the stock market for additions to your watchlist\
