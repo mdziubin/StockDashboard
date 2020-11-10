@@ -10,15 +10,13 @@ const GraphContainer = props => {
   const [range, setRange] = useState('5d');
   const [data, setData] = useState([]);
 
-  // Data request state
-  const [isLoading, setLoading] = useState(true);
+  // Data request state, loading omitted because it interferes with graph transitions
   const [err, setError] = useState(false);
 
   useEffect(() => {
     getChart(props.symbol, range)
       .then(response => {
         setData(response);
-        setLoading(false);
       })
       .catch(() => setError(true));
   }, [range, props.symbol]);
@@ -28,7 +26,6 @@ const GraphContainer = props => {
 
   // Handle dropdown selector changes
   const handleChange = event => {
-    setLoading(true);
     setRange(event.target.value);
   };
 
@@ -36,7 +33,7 @@ const GraphContainer = props => {
   let body = <CContentLoading err={err} />;
 
   // If data is retrieved, set body to graph
-  if (!isLoading && !err) {
+  if (!err) {
     body = (
       <CardContent>
         <Box pb={2}>
