@@ -78,8 +78,18 @@ const getList = (page = 1, filter = '') => {
     });
 };
 
+const getChart = (symbol, range) => {
+  return axiosIEX
+    .get(`stock/${symbol}/chart/${range}`, {
+      params: {
+        chartCloseOnly: true
+      }
+    })
+    .then(response => response.data);
+};
+
 const getToken = () => {
   return JSON.parse(localStorage.getItem('authInfo')).token;
 };
 
-export { getFavs, getPrices, getList, addFav, delFav };
+export { getFavs, getPrices, getList, addFav, delFav, getChart };

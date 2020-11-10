@@ -23,7 +23,7 @@ import CContentLoading from '../../../components/CContentLoading';
 
 // Data incoming in form ["symbol":{"quote": {"symbol":"AAPL", "change":40, "changePercent":0.01, "latestPrice":111, "companyName":"a"}}]
 
-const FavTable = () => {
+const FavTable = ({ setSymbol }) => {
   const [stocks, setStocks] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [err, setError] = useState(false);
@@ -103,7 +103,11 @@ const FavTable = () => {
               </TableHead>
               <TableBody>
                 {stocks.map((stock, i) => (
-                  <TableRow hover key={stock.symbol}>
+                  <TableRow
+                    hover
+                    key={stock.symbol}
+                    onClick={() => setSymbol(stock.symbol)}
+                  >
                     <TableCell>{stock.symbol}</TableCell>
                     <TableCell>{stock.companyName}</TableCell>
                     <TableCell>{'$' + stock.latestPrice}</TableCell>
